@@ -554,6 +554,7 @@ void main()
             break;
         case 4:
             printf("Deseja separar qual lista para criar a nova lista separada?\n");
+            printf("1 - A\t2 - B\n");
             scanf("%d", &opP);
             switch (opP)
             {
