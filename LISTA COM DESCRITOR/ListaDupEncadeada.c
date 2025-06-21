@@ -125,7 +125,7 @@ void RemoverElemento(Descritor *l, int v)
 }
 
 /*Buscar elemento V na lista*/
-NoLista *BuscarElemento(Descritor *l, int v)
+Descritor *BuscarElemento(Descritor *l, int v)
 {
     NoLista *p;
     for (p = l->prim; p != NULL && p->info != v; p = p->prox) // percorre a lista ate encontrar o elemento
@@ -155,7 +155,7 @@ void LiberarLista(Descritor *l)
 }
 
 /*Buscar ultimo elemtento da lista*/
-NoLista *UltimoElemento(Descritor *l)
+Descritor *UltimoElemento(Descritor *l)
 {
     NoLista *p;
     if (!EstaVazia(l))
@@ -170,9 +170,43 @@ NoLista *UltimoElemento(Descritor *l)
     }
 }
 
-NoLista *QuantidadeDeElemento(Descritor *l)
+Descritor *QuantidadeDeElemento(Descritor *l)
 {
     return l->n;
+}
+
+Descritor *separa(Descritor *l, int v)
+{
+    NoLista *p, *ant = NULL;
+    Descritor *nova = NULL;                                   // cria uma nova lista
+    for (p = l->prim; p != NULL && p->info != v; p = p->prox) // percorre a lista ate encontrar o elemento
+    {
+        ant = p; // salva o endereco do elemento anterior
+    }
+
+    if (p == NULL) // se o elemento nao foi encontrado
+    {
+        nova->prim = nova->ult = NULL; // lista vazia
+        nova->n = 0;                   // quantidade de elementos = 0
+        return nova;                   // retorna a lista vazia
+    }
+    nova->prim = p->prox;                        // o primeiro elemento da nova lista rebebe o proximo do elemento que iremos cortar
+    nova->ult = l->ult;                          // o ultimo elemento da nova lista rebebe o ultimo da lista original
+    nova->n = 0;                                 // quantidade de elementos = 0
+    NoLista *q;                                  // ponteiro auxiliar
+    for (q = nova->prim; q != NULL; q = q->prox) // percorre a lista nova para contar a quantidade de elementos
+    {
+        nova->n++; // incrementa a quantidade de elementos
+        if (q->prox == NULL)
+        {
+            nova->ult = q;
+        }
+    }
+
+    p->prox = NULL;
+    l->ult = p;
+    l->n = nova->n;
+    return nova;
 }
 
 void main()
@@ -182,7 +216,11 @@ void main()
     CriarLista(&lista);
     InsereElementoInicio(&lista, 1);
     InsereElementoInicio(&lista, 2);
-    InsereElementoFim(&lista, 3);
+    InsereElementoInicio(&lista, 3);
+    InsereElementoFim(&lista, 4);
+    InsereElementoFim(&lista, 5);
     ImprimirElemento(&lista);
+    printf("\n");
+    ImprimirElemento(separa(&lista, 4));
     printf("\nQuantidade de elementos: %d\n", QuantidadeDeElemento(&lista));
 }

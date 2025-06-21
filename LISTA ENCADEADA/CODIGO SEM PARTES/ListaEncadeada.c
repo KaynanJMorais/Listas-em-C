@@ -274,18 +274,19 @@ NoLista *concatena(NoLista **l1, NoLista **l2)
 /*Separa a lista no elemento V exemplo A = 1 2 3 4, V = 2 então nova lista = 3 4*/
 NoLista *separa(NoLista **l, int v)
 {
-    NoLista *p;
-    NoLista *ListaSeparada = NULL; // Criação Lista nova
-    for (p = *l; p != NULL; p = p->prox)
+    NoLista *p, *ant = NULL;
+    for (p = *l; p != NULL && p->info != v; p = p->prox) // procura o elemento
     {
-        InsereElementoFim(&ListaSeparada, p->info); // for apenas para copiar a lista Separada da Lista A
+        ant = p;
     }
-    for (p = ListaSeparada; p != NULL && p->info != v; p = p->prox) // percorre a lista até encontrar o elemento V
-        ;
-    NoLista *nova = p->prox; // troca o elemento V pelo proximo elemento da lista
-    p->prox = NULL;          // corta a lista
-    ListaSeparada = nova;    // atribui o elemento V para a lista Separada
-    return ListaSeparada;    // retorna a lista separada
+    if (p == NULL)
+    {
+        return NULL;
+    }
+
+    NoLista *nova = p->prox;
+    p->prox = NULL;
+    return nova;
 }
 
 void main()
