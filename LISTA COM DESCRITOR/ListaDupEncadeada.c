@@ -175,10 +175,11 @@ Descritor *QuantidadeDeElemento(Descritor *l)
     return l->n;
 }
 
+/*Separa a lista no elemento X  e cria outra lista a partir do elemento cortado*/
 Descritor *separa(Descritor *l, int v)
 {
     NoLista *p, *ant = NULL;
-    Descritor *nova = NULL;                                   // cria uma nova lista
+    Descritor *nova = (Descritor *)malloc(sizeof(Descritor)); // cria uma nova lista
     for (p = l->prim; p != NULL && p->info != v; p = p->prox) // percorre a lista ate encontrar o elemento
     {
         ant = p; // salva o endereco do elemento anterior
@@ -187,26 +188,26 @@ Descritor *separa(Descritor *l, int v)
     if (p == NULL) // se o elemento nao foi encontrado
     {
         nova->prim = nova->ult = NULL; // lista vazia
-        nova->n = 0;                   // quantidade de elementos = 0
-        return nova;                   // retorna a lista vazia
+        nova->n = 0; // quantidade de elementos = 0
+        return nova; // retorna a lista vazia
     }
-    nova->prim = p->prox;                        // o primeiro elemento da nova lista rebebe o proximo do elemento que iremos cortar
-    nova->ult = l->ult;                          // o ultimo elemento da nova lista rebebe o ultimo da lista original
-    nova->n = 0;                                 // quantidade de elementos = 0
-    NoLista *q;                                  // ponteiro auxiliar
+    nova->prim = p->prox; // o primeiro elemento da nova lista rebebe o proximo do elemento que iremos cortar
+    nova->ult = l->ult; // o ultimo elemento da nova lista rebebe o ultimo da lista original
+    nova->n = 0; // quantidade de elementos = 0
+    NoLista *q; // ponteiro auxiliar
     for (q = nova->prim; q != NULL; q = q->prox) // percorre a lista nova para contar a quantidade de elementos
     {
         nova->n++; // incrementa a quantidade de elementos
-        if (q->prox == NULL)
+        if (q->prox == NULL) // se o elemento atual for o ultimo da lista
         {
-            nova->ult = q;
+            nova->ult = q; // salva o endereco do elemento atual como o ultimo da lista
         }
     }
 
-    p->prox = NULL;
-    l->ult = p;
-    l->n = nova->n;
-    return nova;
+    p->prox = NULL; // o elemento que foi cortado tem seu proximo nulo
+    l->ult = p; // o ultimo elemento da lista original rebebe o elemento que foi cortado
+    l->n = nova->n; // quantidade de elementos da lista original = quantidade de elementos da lista nova
+    return nova; // retorna a lista nova
 }
 
 void main()
