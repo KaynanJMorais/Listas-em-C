@@ -132,13 +132,11 @@ void Liberar(Lista *l)
 Lista *separar(Lista *l, int v)
 {
     Lista *nova = (Lista *)malloc(sizeof(Lista));
-    NoLista *p, *ant = NULL;
+    NoLista *p;
     if (!EstaVazia(l))
     {
         for (p = l->cab->prox; p != l->cau && p->info != v; p = p->prox)
-        {
-            ant = p;
-        }
+            ;
         if (p != l->cau)
         {
             nova->cau = l->cau;
