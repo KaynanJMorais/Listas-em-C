@@ -275,10 +275,8 @@ NoLista *concatena(NoLista **l1, NoLista **l2)
 NoLista *separa(NoLista **l, int v)
 {
     NoLista *p, *ant = NULL;
-    for (p = *l; p != NULL && p->info != v; p = p->prox) // procura o elemento
-    {
-        ant = p;
-    }
+    for (p = *l; p != NULL && p->info != v; p = p->prox)
+        ; // procura o elemento
     if (p == NULL)
     {
         return NULL;
@@ -286,6 +284,33 @@ NoLista *separa(NoLista **l, int v)
 
     NoLista *nova = p->prox;
     p->prox = NULL;
+    return nova;
+}
+
+NoLista *ParImpar(NoLista **l, int v)
+{
+    NoLista *p;
+    NoLista *nova = NULL;
+    if (v == 1)
+    {
+        for (p = *l; p != NULL; p = p->prox)
+        {
+            if (p->info % 2 == 0)
+            {
+                InsereElementoFim(&nova, p->info);
+            }
+        }
+    }
+    else
+    {
+        for (p = *l; p != NULL; p = p->prox)
+        {
+            if (p->info % 2 != 0)
+            {
+                InsereElementoFim(&nova, p->info);
+            }
+        }
+    }
     return nova;
 }
 
@@ -576,6 +601,30 @@ void main()
             }
             break;
         case 5:
+        {
+            printf("Qual lista deseja separam em par e impar?\n");
+            printf("1 - A\t2 - B\n");
+            scanf("%d", &opP);
+            switch (opP)
+            {
+            case 1:
+                printf("Agora escolha se quer ela separada em par ou impar:\n");
+                printf("1 - Par\t2 - Impar\n");
+                scanf("%d", &v);
+                NoLista *listaa = ParImpar(&a, v);
+                Imprimir(&listaa);
+                break;
+            case 2:
+                printf("Agora escolha se quer ela separada em par ou impar:\n");
+                printf("1 - Par\t2 - Impar\n");
+                scanf("%d", &v);
+                NoLista *listab = ParImpar(&a, v);
+                Imprimir(&listab);
+                break;
+            }
+        }
+        break;
+        case 6:
             printf("LISTA A:\n");
             Imprimir(&a);
             printf("\n");
