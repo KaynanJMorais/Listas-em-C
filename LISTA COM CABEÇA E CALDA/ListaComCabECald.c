@@ -31,7 +31,7 @@ int EstaVazia(Lista *l)
     }
     else
     {
-        return NULL;
+        return 0;
     }
 }
 
@@ -131,28 +131,27 @@ void Liberar(Lista *l)
 
 Lista *separar(Lista *l, int v)
 {
-    Lista *nova = (Lista *)malloc(sizeof(Lista));
     NoLista *p;
-    if (!EstaVazia(l))
+    for (p = l->cab->prox; p != l->cau && p->info != v; p = p->prox)
+        ;
+    if (p == l->cau)
     {
-        for (p = l->cab->prox; p != l->cau && p->info != v; p = p->prox)
-            ;
-        if (p != l->cau)
-        {
-            nova->cau = l->cau;
-            nova->cab->prox = p->prox;
-            p->prox = l->cau;
-        }
-        else
-        {
-            nova->cab = nova->cau = NULL;
-        }
+        printf("Elemento não encontrado");
     }
     else
     {
-        nova->cab = nova->cau = NULL;
+        Lista *nova;
+        CriarLista(&nova);
+        nova->cab->prox = p->prox;
+        NoLista *x = (NoLista *)malloc(sizeof(NoLista));
+        x->prox = NULL;
+        p->prox = x;
+        NoLista *c = l->cau;
+        l->cau = x;
+        NoLista *b = nova->cau;
+        nova->cau = c;
+        free(b);
     }
-    return nova;
 }
 
 int main()
