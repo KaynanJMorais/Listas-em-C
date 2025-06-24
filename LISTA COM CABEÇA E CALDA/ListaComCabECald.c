@@ -14,7 +14,7 @@ typedef struct lista
 } Lista;
 
 /*Criação da lista*/
-void CriarLista(Lista *l)
+void criarlista(Lista *l)
 {
     l->cab = (NoLista *)malloc(sizeof(NoLista));
     l->cau = (NoLista *)malloc(sizeof(NoLista));
@@ -25,14 +25,7 @@ void CriarLista(Lista *l)
 /*Verificar se a lista esta vazia*/
 int EstaVazia(Lista *l)
 {
-    if (l->cab->prox == l->cau)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return (l->cab->prox == l->cau);
 }
 
 /*Inserir elemento sempre no incio da lista*/
@@ -56,11 +49,13 @@ void InsereNoFim(Lista *l, int v)
 {
     NoLista *novo = (NoLista *)malloc(sizeof(NoLista));
     if (novo != NULL)
-    {                        // Verifica se teve alocação de memoria
-        novo->prox = NULL;   // Coloca o novo nó como o último nó
-        l->cau->info = v;    // Coloca cau receber o ultimo valor
-        l->cau->prox = novo; // Coloca o novo nó como o último nó da lista
-        l->cau = novo;       // Coloca o novo nó como o último nó da lista
+    {
+        novo->info = v;
+        novo->prox = l->cau;
+        NoLista *p;
+        for (p = l->cab->prox; p->prox != l->cau; p = p->prox)
+            ;
+        p->prox = novo;
     }
     else
     {
@@ -137,27 +132,27 @@ Lista *separar(Lista *l, int v)
     if (p == l->cau)
     {
         printf("Elemento não encontrado");
+        return NULL;
     }
     else
     {
-        Lista *nova;
-        CriarLista(&nova);
+        Lista *nova = (Lista *)malloc(sizeof(Lista));
+        ;
+        criarlista(nova);
         nova->cab->prox = p->prox;
-        NoLista *x = (NoLista *)malloc(sizeof(NoLista));
-        x->prox = NULL;
-        p->prox = x;
-        NoLista *c = l->cau;
-        l->cau = x;
-        NoLista *b = nova->cau;
-        nova->cau = c;
-        free(b);
+        NoLista *q;
+        for (q = nova->cab; q->prox != l->cau && q->prox != NULL; q = q->prox)
+            ;
+        q->prox = nova->cau;
+        p->prox = l->cau;
+        return nova;
     }
 }
 
 int main()
 {
     Lista lista;
-    CriarLista(&lista);
+    criarlista(&lista);
     InsereNoInicio(&lista, 3);
     InsereNoInicio(&lista, 2);
     InsereNoInicio(&lista, 1);
