@@ -314,6 +314,26 @@ NoLista *ParImpar(NoLista **l, int v)
     return nova;
 }
 
+int compara(NoLista *l1, NoLista *l2)
+{
+    NoLista *p1 = l1, *p2 = l2;
+    for (; p1 != NULL && p2 != NULL; p1 = p1->prox, p2 = p2->prox)
+    {
+        if (p1->info == p2->info)
+        {
+            return 1;
+        }
+        if (p1 == NULL && p2 == NULL)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+}
+
 void main()
 {
     NoLista *a, *b, *c, *d;
@@ -329,8 +349,8 @@ void main()
         printf("Em qual lista deseja mexer A ou B?\n");
         printf("1 - Menu A\t2 - Menu B\n");
         printf("3 - Concatenar Listas\t4 - Separar Listas\n");
-        printf("5 - Corta em Par ou Impar\t 6 - Imprimir Lista\n");
-        printf("0 - Sair\n");
+        printf("5 - Corta em Par ou Impar\t 6 - Comparar Listas\n");
+        printf("7 - Imprimir Lista\t 8 - Sair\n");
         scanf("%d", &opP);
         printf("\n");
 
@@ -626,6 +646,19 @@ void main()
         }
         break;
         case 6:
+        {
+            int comp = compara(&a, &b);
+            if (comp == 1)
+            {
+                printf("As listas são iguais\n");
+            }
+            else
+            {
+                printf("As listas são diferentes\n");
+            }
+        }
+        break;
+        case 7:
             printf("LISTA A:\n");
             Imprimir(&a);
             printf("\n");
