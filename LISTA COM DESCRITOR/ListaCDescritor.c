@@ -125,7 +125,7 @@ void RemoverElemento(Descritor *l, int v)
 }
 
 /*Buscar elemento V na lista*/
-Descritor *BuscarElemento(Descritor *l, int v)
+NoLista *BuscarElemento(Descritor *l, int v)
 {
     NoLista *p;
     for (p = l->prim; p != NULL && p->info != v; p = p->prox) // percorre a lista ate encontrar o elemento
@@ -155,7 +155,7 @@ void LiberarLista(Descritor *l)
 }
 
 /*Buscar ultimo elemtento da lista*/
-Descritor *UltimoElemento(Descritor *l)
+NoLista *UltimoElemento(Descritor *l)
 {
     NoLista *p;
     if (!EstaVazia(l))
@@ -170,58 +170,97 @@ Descritor *UltimoElemento(Descritor *l)
     }
 }
 
-Descritor *QuantidadeDeElemento(Descritor *l)
+int QuantidadeDeElemento(Descritor *l)
 {
     return l->n;
 }
 
 /*Separa a lista no elemento X  e cria outra lista a partir do elemento cortado*/
-Descritor *separa(Descritor *l, int v)
+Descritor separa(Descritor *l, int v)
 {
-    NoLista *p, *ant = NULL;
-    Descritor *nova = (Descritor *)malloc(sizeof(Descritor)); // cria uma nova lista
-    for (p = l->prim; p != NULL && p->info != v; p = p->prox) // percorre a lista ate encontrar o elemento
+    Descritor *nova = (Descritor *)malloc(sizeof(Descritor));
+    NoLista *p, *q;
+    for (p = l->prim; p != NULL && p->info != v; p = p->prox)
+        ;
+    if (!EstaVazia(l))
     {
-        ant = p; // salva o endereco do elemento anterior
-    }
-
-    if (p == NULL) // se o elemento nao foi encontrado
-    {
-        nova->prim = nova->ult = NULL; // lista vazia
-        nova->n = 0; // quantidade de elementos = 0
-        return nova; // retorna a lista vazia
-    }
-    nova->prim = p->prox; // o primeiro elemento da nova lista rebebe o proximo do elemento que iremos cortar
-    nova->ult = l->ult; // o ultimo elemento da nova lista rebebe o ultimo da lista original
-    nova->n = 0; // quantidade de elementos = 0
-    NoLista *q; // ponteiro auxiliar
-    for (q = nova->prim; q != NULL; q = q->prox) // percorre a lista nova para contar a quantidade de elementos
-    {
-        nova->n++; // incrementa a quantidade de elementos
-        if (q->prox == NULL) // se o elemento atual for o ultimo da lista
+        if (p == NULL)
         {
-            nova->ult = q; // salva o endereco do elemento atual como o ultimo da lista
+            nova->prim = nova->ult = NULL;
+            nova->n = 0;
+            return *nova;
+        }
+        else
+        {
+            nova->prim = p->prox;
+            nova->ult = NULL;
+            p->prox = NULL;
+            nova->n = 0;
+            l->ult = p;
+
+            for (q = nova->prim; q != NULL; q = q->prox)
+            {
+                nova->n++;
+                if (q->prox == NULL)
+                {
+                    nova->ult = q;
+                }
+            }
+            l->n = nova->n;
         }
     }
+    return *nova;
+}
 
-    p->prox = NULL; // o elemento que foi cortado tem seu proximo nulo
-    l->ult = p; // o ultimo elemento da lista original rebebe o elemento que foi cortado
-    l->n = nova->n; // quantidade de elementos da lista original = quantidade de elementos da lista nova
-    return nova; // retorna a lista nova
+Descritor concatena(Descritor *a, Descritor *b)
+{
+    NoLista *p, *q;
+    Descritor nova;
+    nova.n = 0;
+    if (EstaVazia(a))
+    {
+        nova.prim = b->prim;
+        nova.ult = b->ult;
+        nova.n = b->n;
+        return nova;
+    }
+    if (EstaVazia(b))
+    {
+        nova.prim = a->prim;
+        nova.ult = b->ult;
+        nova.n = b->n;
+        return nova;
+    }
+    nova.prim = a->prim;
+    nova.ult = a->ult;
+    for (p = a->prim; p->prox != NULL; p = p->prox)
+        ;
+    p->prox = b->prim;
+    for (q = nova.prim; q != NULL; q = q->prox)
+    {
+        nova.n++;
+        if (q->prox == NULL)
+        {
+            nova.ult = q;
+        }
+    }
+    return nova;
 }
 
 void main()
 {
-    Descritor lista;
-    NoLista *c;
-    CriarLista(&lista);
-    InsereElementoInicio(&lista, 1);
-    InsereElementoInicio(&lista, 2);
-    InsereElementoInicio(&lista, 3);
-    InsereElementoFim(&lista, 4);
-    InsereElementoFim(&lista, 5);
-    ImprimirElemento(&lista);
+    Descritor a;
+    Descritor b;
+    CriarLista(&a);
+    CriarLista(&b);
+    InsereElementoInicio(&a, 1);
+    InsereElementoInicio(&a, 2);
+    InsereElementoInicio(&a, 3);
+    InsereElementoFim(&b, 4);
+    InsereElementoFim(&b, 5);
+    ImprimirElemento(&b);
     printf("\n");
-    ImprimirElemento(separa(&lista, 4));
-    printf("\nQuantidade de elementos: %d\n", QuantidadeDeElemento(&lista));
+    Descritor c = concatena(&a, &b);
+    ImprimirElemento(&c);
+    printf("\nQuantidade de elementos: %d\n", QuantidadeDeElemento(&c));
 }

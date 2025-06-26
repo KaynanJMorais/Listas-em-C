@@ -329,7 +329,8 @@ void main()
         printf("Em qual lista deseja mexer A ou B?\n");
         printf("1 - Menu A\t2 - Menu B\n");
         printf("3 - Concatenar Listas\t4 - Separar Listas\n");
-        printf("5 - Imprimir Lista\t 0 - Sair\n");
+        printf("5 - Corta em Par ou Impar\t 6 - Imprimir Lista\n");
+        printf("0 - Sair\n");
         scanf("%d", &opP);
         printf("\n");
 

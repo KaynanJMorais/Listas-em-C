@@ -124,39 +124,68 @@ void Liberar(Lista *l)
     }
 }
 
-Lista *separar(Lista *l, int v)
+Lista separa(Lista *l, int v)
 {
     NoLista *p;
-    for (p = l->cab->prox; p != l->cau && p->info != v; p = p->prox)
-        ;
-    if (p == l->cau)
+    for (p = l->cab->prox; p->info != v && p->prox != l->cau; p = p->prox)
     {
-        printf("Elemento não encontrado");
-        return NULL;
+    }
+    if (p->info != v)
+    {
+        printf("ELEMENTO NAO ENCONTRADO\n");
     }
     else
     {
-        Lista *nova = (Lista *)malloc(sizeof(Lista));
-        ;
-        criarlista(nova);
-        nova->cab->prox = p->prox;
-        NoLista *q;
-        for (q = nova->cab; q->prox != l->cau && q->prox != NULL; q = q->prox)
-            ;
-        q->prox = nova->cau;
+        NoLista *c;
+        c = p->prox;
+        NoLista *b = c;
+        for (; c->prox != l->cau; c = c->prox)
+        {
+        }
+        Lista nova;
+        criarlista(&nova);
+        nova.cab->prox = b;
         p->prox = l->cau;
+        c->prox = nova.cau;
         return nova;
     }
 }
 
+Lista concatena(Lista *l1, Lista *l2)
+{
+    NoLista *p;
+    Lista nova;
+    if (EstaVazia(l1))
+    {
+        nova.cab = l2->cab;
+        nova.cau = l2->cau;
+        return nova;
+    }
+    if (EstaVazia(l2))
+    {
+        nova.cab = l1->cab;
+        nova.cau = l2->cau;
+        return nova;
+    }
+    nova.cab = l1->cab;
+    nova.cau = l2->cau;
+
+    for (p = l1->cab->prox; p->prox != l1->cau; p = p->prox)
+        ;
+    p->prox = l2->cab->prox;
+    return nova;
+}
+
 int main()
 {
-    Lista lista;
-    criarlista(&lista);
-    InsereNoInicio(&lista, 3);
-    InsereNoInicio(&lista, 2);
-    InsereNoInicio(&lista, 1);
-    InsereNoFim(&lista, 4);
-    Imprimir(&lista);
-    Imprimir(separar(&lista, 2));
+    Lista a;
+    Lista b;
+    criarlista(&a);
+    criarlista(&b);
+    InsereNoInicio(&a, 3);
+    InsereNoInicio(&a, 2);
+    InsereNoInicio(&b, 1);
+    InsereNoFim(&b, 4);
+    Lista q = concatena(&a, &b);
+    Imprimir(&q);
 }
