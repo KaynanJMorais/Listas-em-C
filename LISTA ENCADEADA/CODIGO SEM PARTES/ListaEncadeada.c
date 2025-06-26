@@ -317,7 +317,7 @@ NoLista *ParImpar(NoLista **l, int v)
 int compara(NoLista *l1, NoLista *l2)
 {
     NoLista *p1 = l1, *p2 = l2;
-    for (; p1 != NULL && p2 != NULL; p1 = p1->prox, p2 = p2->prox)
+    for (; p1 != NULL && p2 != NULL; p1 = p1->prox, p2 = p2->prox) 
     {
         if (p1->info == p2->info)
         {

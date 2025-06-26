@@ -168,7 +168,7 @@ NoLista *concatena(NoLista **l1, NoLista **l2)
 NoLista *impar(NoLista **l)
 {
     NoLista *p;
-    NoLista *nova = NULL;
+    NoLista *novaLista = NULL;
     for (p = *l; p != NULL; p = p->prox) // Percorre a lista
     {
         if (p->info % 2 != 0) // Se o valor for impar
@@ -177,17 +177,17 @@ NoLista *impar(NoLista **l)
             if (novo != NULL)                                   // Se a alocação foi bem sucedida
             {
                 novo->info = p->info; // O novo nó recebe o valor do nó atual
-                novo->prox = nova;    // O novo nó recebe o nó anterior
+                novo->prox = novaLista;    // O novo nó recebe o nó anterior
                 novo->ant = NULL;     // O novo nó recebe NULL como antecessor
-                if (nova != NULL)     // Se a lista não está vazia
+                if (novaLista != NULL)     // Se a lista não está vazia
                 {
-                    nova->ant = novo; // O nó anterior recebe o novo nó como antecessor
+                    novaLista->ant = novo; // O nó anterior recebe o novo nó como antecessor
                 }
-                nova = novo; // A lista de impares recebe o novo nó
+                novaLista = novo; // A lista de impares recebe o novo nó
             }
         }
     }
-    return nova;
+    return novaLista;
 }
 
 int main()
