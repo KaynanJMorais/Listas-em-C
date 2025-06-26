@@ -186,65 +186,65 @@ Descritor separa(Descritor *l, int v)
     {
         if (p == NULL)
         {
-            nova->prim = nova->ult = NULL;
-            nova->n = 0;
+            nova->prim = nova->ult = NULL; // lista vazia
+            nova->n = 0; // quantidade de elementos = 0
             return *nova;
         }
         else
         {
-            nova->prim = p->prox;
-            nova->ult = NULL;
-            p->prox = NULL;
-            nova->n = 0;
-            l->ult = p;
+            nova->prim = p->prox; // novo primeiro elemento
+            nova->ult = NULL; // novo ultimo elemento
+            p->prox = NULL; // elemento cortado
+            nova->n = 0; // quantidade de elementos = 0
+            l->ult = p; // atualiza o ultimo elemento da lista original
 
-            for (q = nova->prim; q != NULL; q = q->prox)
+            for (q = nova->prim; q != NULL; q = q->prox) // percorre a lista nova
             {
-                nova->n++;
-                if (q->prox == NULL)
+                nova->n++;  // incrementa a quantidade de elementos
+                if (q->prox == NULL) // se for o ultimo elemento
                 {
-                    nova->ult = q;
+                    nova->ult = q; // atualiza o ultimo elemento da lista nova
                 }
             }
-            l->n = nova->n;
+            l->n = nova->n; // atualiza a quantidade de elementos da lista original
         }
     }
-    return *nova;
+    return *nova; // retorna a lista nova
 }
 
 Descritor concatena(Descritor *a, Descritor *b)
 {
     NoLista *p, *q;
     Descritor nova;
-    nova.n = 0;
+    nova.n = 0; // quantidade de elementos = 0
     if (EstaVazia(a))
     {
-        nova.prim = b->prim;
-        nova.ult = b->ult;
-        nova.n = b->n;
-        return nova;
+        nova.prim = b->prim; // se a lista a for vazia, b se torna a lista nova
+        nova.ult = b->ult; // ultimo elemento da lista nova
+        nova.n = b->n; // quantidade de elementos da lista nova
+        return nova; // retorna a lista nova
     }
     if (EstaVazia(b))
     {
-        nova.prim = a->prim;
-        nova.ult = b->ult;
-        nova.n = b->n;
-        return nova;
+        nova.prim = a->prim; // se a lista b for vazia, a se torna a lista nova
+        nova.ult = b->ult; // ultimo elemento da lista nova
+        nova.n = b->n; // quantidade de elementos da lista nova
+        return nova; // retorna a lista nova
     }
-    nova.prim = a->prim;
-    nova.ult = a->ult;
-    for (p = a->prim; p->prox != NULL; p = p->prox)
+    nova.prim = a->prim; // lista nova começa com a lista a
+    nova.ult = a->ult; // ultimo elemento da lista nova
+    for (p = a->prim; p->prox != NULL; p = p->prox) // percorre a lista a
         ;
-    p->prox = b->prim;
-    for (q = nova.prim; q != NULL; q = q->prox)
+    p->prox = b->prim; // conecta a lista b a lista a
+    for (q = nova.prim; q != NULL; q = q->prox) // percorre a lista nova
     {
-        nova.n++;
-        if (q->prox == NULL)
+        nova.n++; // incrementa a quantidade de elementos 
+        if (q->prox == NULL) // se for o ultimo elemento
         {
-            nova.ult = q;
+            nova.ult = q; // atualiza o ultimo elemento da lista nova
         }
     }
-    return nova;
+    return nova; // retorna a lista nova
 }
 
 void main()

@@ -110,13 +110,13 @@ void Liberar(Lista *l)
     NoLista *temp;
     if (!EstaVazia(l)) // Verifica se a lista está vazia
     {
-        for (p = l->cab->prox; p != l->cau; p = temp)
+        for (p = l->cab->prox; p != l->cau; p = temp) // Percorre a lista
         {
-            temp = p->prox;
-            free(p);
+            temp = p->prox; // Temp recebe o proximo de P
+            free(p); // Libera a memoria do elemento
         }
-        l->cab->prox = l->cau = NULL;
-        l->cau = 0;
+        l->cab->prox = l->cau = NULL; // Libera a memoria do cabeca e cauda
+        l->cau = 0; // Define a cauda como 0
     }
     else
     {
@@ -127,27 +127,27 @@ void Liberar(Lista *l)
 Lista separa(Lista *l, int v)
 {
     NoLista *p;
-    for (p = l->cab->prox; p->info != v && p->prox != l->cau; p = p->prox)
+    for (p = l->cab->prox; p->info != v && p->prox != l->cau; p = p->prox) // Percorre a lista
     {
     }
-    if (p->info != v)
+    if (p->info != v) // Verifica se o elemento foi encontrado
     {
         printf("ELEMENTO NAO ENCONTRADO\n");
     }
     else
     {
-        NoLista *c;
-        c = p->prox;
-        NoLista *b = c;
-        for (; c->prox != l->cau; c = c->prox)
-        {
+        NoLista *c; // Cria um novo elemento
+        c = p->prox; // C recebe o proximo de P
+        NoLista *b = c; // B recebe o elemento C
+        for (; c->prox != l->cau; c = c->prox) // Percorre a lista
+        { 
         }
-        Lista nova;
-        criarlista(&nova);
-        nova.cab->prox = b;
-        p->prox = l->cau;
-        c->prox = nova.cau;
-        return nova;
+        Lista nova; // Cria uma nova lista
+        criarlista(&nova); // Cria uma nova lista
+        nova.cab->prox = b; // A nova lista recebe o elemento B
+        p->prox = l->cau; // O elemento P recebe a cauda da lista
+        c->prox = nova.cau; // O elemento C recebe a cauda da nova lista
+        return nova; // Retorna a nova lista
     }
 }
 
@@ -155,25 +155,25 @@ Lista concatena(Lista *l1, Lista *l2)
 {
     NoLista *p;
     Lista nova;
-    if (EstaVazia(l1))
+    if (EstaVazia(l1)) // Verifica se a lista 1 está vazia
     {
-        nova.cab = l2->cab;
-        nova.cau = l2->cau;
-        return nova;
+        nova.cab = l2->cab;  // A nova lista recebe a cabeca da lista 2
+        nova.cau = l2->cau;  // A nova lista recebe a calda da lista 2
+        return nova; // Retorna a nova lista
     }
     if (EstaVazia(l2))
     {
-        nova.cab = l1->cab;
-        nova.cau = l2->cau;
-        return nova;
+        nova.cab = l1->cab; // A nova lista recebe a cabeca da lista 1
+        nova.cau = l2->cau; // A nova lista recebe a cauda da lista 2
+        return nova; // Retorna a nova lista
     }
-    nova.cab = l1->cab;
-    nova.cau = l2->cau;
+    nova.cab = l1->cab; // A nova lista recebe a cabeca da lista 1
+    nova.cau = l2->cau; // A nova lista recebe a cauda da lista 2
 
-    for (p = l1->cab->prox; p->prox != l1->cau; p = p->prox)
+    for (p = l1->cab->prox; p->prox != l1->cau; p = p->prox) // Percorre a lista 1
         ;
-    p->prox = l2->cab->prox;
-    return nova;
+    p->prox = l2->cab->prox; // O elemento P recebe a cabeca da lista 2
+    return nova; // Retorna a nova lista
 }
 
 int main()
